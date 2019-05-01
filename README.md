@@ -1,4 +1,4 @@
-# Fuber
+# Füber
 ## Modelling Problem:
 You are the proprietor of füber, an on call taxi service.
 * You have a fleet of cabs at your disposal, and each cab has a location, determined by it's latitude and longitude.
