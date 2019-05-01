@@ -45,4 +45,9 @@ public class Solution
         TaxiServiceManager.getInstance().addCars(cab);
     }
 
+    public String requestCab(float sourceX, float sourceY, float destinationX, float destinationY) throws CabNotFoundException
+    {
+        return "";
+    }
+
 }
