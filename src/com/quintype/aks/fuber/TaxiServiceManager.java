@@ -7,7 +7,10 @@
 package com.quintype.aks.fuber;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.quintype.aks.fuber.exception.CabNotFoundException;
 
 public class TaxiServiceManager
 {
@@ -38,13 +41,39 @@ public class TaxiServiceManager
         return availableCars.size() > 0;
     }
 
-    public void assignCars(float x, float y)
+    public List<Car> getAvailableCars()
+    {
+        return (List<Car>) availableCars.values();
+    }
+
+    public String assignCars(double sourceX, double sourceY) throws CabNotFoundException
     {
         // Find closest car.
+        if (!isCarsAvailable())
+        {
+            throw new CabNotFoundException("Cabs not available at the moment! Please try later");
+        }
+        
+        Car closestCar = null;
+        double minDistance = Double.MAX_VALUE;
+        for (Car car : availableCars.values())
+        {
+            double distance = DistanceCalculator.getInstance().calculateDistance(
+                car.getLocation().getLatitude(),
+                car.getLocation().getLongititude(),
+                sourceX,
+                sourceY);
+            if (distance < minDistance)
+            {
+                closestCar = car;
+                minDistance = distance;
+            }
+        }
 
-        String licenseNumber = "";
-        Car cab = availableCars.remove(licenseNumber);
-        assignedCars.put(licenseNumber, cab);
+        availableCars.remove(closestCar.getLicenseNumber());
+        assignedCars.put(closestCar.getLicenseNumber(), closestCar);
+
+        return closestCar.getLicenseNumber();
     }
 
     public void addCars(Car car)

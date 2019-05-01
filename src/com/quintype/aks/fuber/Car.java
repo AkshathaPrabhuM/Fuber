@@ -13,9 +13,10 @@ public class Car extends Vehicle
 
     private Location location;
 
-    public Car(String licenseNo)
+    public Car(String licenseNo, Location sourceLocation)
     {
         super(licenseNo);
+        this.location = sourceLocation;
         status = Status.ASSIGNED;
     }
 

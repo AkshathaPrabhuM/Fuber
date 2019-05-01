@@ -9,32 +9,32 @@ package com.quintype.aks.fuber;
 public class Location
 {
 
-    private float latitude;
+    private double latitude;
 
-    private float longitude;
+    private double longitude;
 
-    public Location(float latitude, float longitude)
+    public Location(double latitude, double longitude)
     {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public float getLatitude()
+    public double getLatitude()
     {
         return this.latitude;
     }
 
-    public float getLongititude()
+    public double getLongititude()
     {
         return this.longitude;
     }
 
-    public void setLatitiude(float value)
+    public void setLatitiude(double value)
     {
         this.latitude = value;
     }
 
-    public void setLongitiude(float value)
+    public void setLongitiude(double value)
     {
         this.longitude = value;
     }

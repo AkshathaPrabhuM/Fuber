@@ -15,8 +15,7 @@
  */
 package com.quintype.aks.fuber;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.quintype.aks.fuber.exception.CabNotFoundException;
 
 public class Solution
 {
@@ -27,27 +26,31 @@ public class Solution
 
         String liceseNumber = "KA03JA6680";
 
-        Location location = new Location(34, 35);
-
         solution.addCab(liceseNumber, 34, 35);
 
-        String licenseNumber = requestCab(34, 35, 90, 97);
+        try
+        {
+            String licenseNumber = solution.requestCab(34, 35, 90, 97);
+        }
+        catch (CabNotFoundException e)
+        {
+            e.printStackTrace();
+        }
 
     }
 
-    public void addCab(String licenseNumber, float latitude, float longitude)
+    public void addCab(String licenseNumber, double latitude, double longitude)
     {
         Location sourceLocation = new Location(latitude, longitude);
-
-        Car cab = new Car(licenseNumber);
-        cab.setLocation(sourceLocation);
+        Car cab = new Car(licenseNumber, sourceLocation);
 
         TaxiServiceManager.getInstance().addCars(cab);
     }
 
-    public String requestCab(float sourceX, float sourceY, float destinationX, float destinationY) throws CabNotFoundException
+    public String requestCab(double sourceX, double sourceY, double destinationX, double destinationY)
+            throws CabNotFoundException
     {
-        return "";
+        return TaxiServiceManager.getInstance().assignCars(sourceX, sourceY);
     }
 
 }
