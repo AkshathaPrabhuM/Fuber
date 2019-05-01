@@ -18,8 +18,8 @@ public class Vehicle
 
     private int manufacturedYear;
 
-    private String color;
-    
+    private Color color;
+
     public Vehicle(String licenseNo)
     {
         this.licenseNumber = licenseNo;
@@ -75,12 +75,12 @@ public class Vehicle
         this.manufacturedYear = manufacturedYear;
     }
 
-    public String getColor()
+    public Color getColor()
     {
         return color;
     }
 
-    public void setColor(String color)
+    public void setColor(Color color)
     {
         this.color = color;
     }

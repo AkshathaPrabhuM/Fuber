@@ -53,4 +53,9 @@ public class Solution
         return TaxiServiceManager.getInstance().assignCars(sourceX, sourceY);
     }
 
+    public String requestCab(double sourceX, double sourceY, double destinationX, double destinationY, Color colorPref)
+            throws CabNotFoundException
+    {
+        return TaxiServiceManager.getInstance().assignCars(sourceX, sourceY, colorPref);
+    }
 }
