@@ -118,6 +118,11 @@ public class TaxiServiceManager
         return (List<Car>) this.availableCars.values();
     }
 
+    public Car getCar(String licenseNumber)
+    {
+        return this.availableCars.get(licenseNumber);
+    }
+
     public boolean isCarsAvailable()
     {
         return this.availableCars.size() > 0;

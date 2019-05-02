@@ -16,6 +16,7 @@
 package com.aks.fuber;
 
 import com.aks.fuber.exception.CabNotFoundException;
+import com.aks.fuber.exception.IncorrectLicenceNumber;
 
 public class Solution
 {
@@ -38,7 +39,15 @@ public class Solution
             e.printStackTrace();
         }
 
-        solution.startTrip(licenseNumber);
+        try
+        {
+            solution.startTrip(licenseNumber);
+        }
+        catch (IncorrectLicenceNumber e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
@@ -62,9 +71,9 @@ public class Solution
         return TaxiServiceManager.getInstance().assignCars(sourceX, sourceY, colorPref);
     }
 
-    public void startTrip(String licenseNumber)
+    public void startTrip(String licenseNumber) throws IncorrectLicenceNumber
     {
-        //        TripManager.getInstance().
+        TripManager.getInstance().startTrip(licenseNumber);
 
     }
 }
