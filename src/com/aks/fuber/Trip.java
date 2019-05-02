@@ -40,6 +40,6 @@ public class Trip
     public void startTrip()
     {
         this.startTime = LocalDate.now();
-        this.tripStatus = TripStatus.TRIP_ENDED;
+        this.tripStatus = TripStatus.TRIP_STARTED;
     }
 }
