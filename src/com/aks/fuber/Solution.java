@@ -17,6 +17,7 @@ package com.aks.fuber;
 
 import com.aks.fuber.exception.CabNotFoundException;
 import com.aks.fuber.exception.IncorrectLicenceNumber;
+import com.aks.fuber.exception.TripNotFoundException;
 
 public class Solution
 {
@@ -49,6 +50,16 @@ public class Solution
             e.printStackTrace();
         }
 
+        try
+        {
+            solution.stopTrip(licenseNumber, 98, 100);
+        }
+        catch (TripNotFoundException | CabNotFoundException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 
     public void addCab(String licenseNumber, double latitude, double longitude)
@@ -74,6 +85,12 @@ public class Solution
     public void startTrip(String licenseNumber) throws IncorrectLicenceNumber
     {
         TripManager.getInstance().startTrip(licenseNumber);
-
     }
+
+    public void stopTrip(String licenseNumber, double destX, double destY)
+            throws TripNotFoundException, CabNotFoundException
+    {
+        TripManager.getInstance().stopTrip(licenseNumber, destX, destY);
+    }
+
 }

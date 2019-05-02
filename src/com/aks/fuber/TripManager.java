@@ -6,9 +6,11 @@
  */
 package com.aks.fuber;
 
-import java.util.List;
+import java.util.Map;
 
+import com.aks.fuber.exception.CabNotFoundException;
 import com.aks.fuber.exception.IncorrectLicenceNumber;
+import com.aks.fuber.exception.TripNotFoundException;
 
 public class TripManager
 {
@@ -23,7 +25,7 @@ public class TripManager
         return TripManager.INSTANCE;
     }
 
-    private List<Trip> trips;
+    private Map<String, Trip> trips;
 
     private TripManager()
     {
@@ -40,9 +42,29 @@ public class TripManager
             throw new IncorrectLicenceNumber("Cannot start the trip, Invalid License Number");
         }
 
-        trip.setStartLocation(car.getLocation());
+        this.trips.put(licenseNumber, trip);
 
+        trip.setStartLocation(car.getLocation());
         trip.startTrip();
+    }
+
+    public void stopTrip(String licenseNumber, double destX, double destY)
+            throws TripNotFoundException, CabNotFoundException
+    {
+        Trip trip = this.trips.get(licenseNumber);
+
+        if ((trip == null) || (trip.getTripStatus() != TripStatus.TRIP_STARTED))
+        {
+            throw new TripNotFoundException("Invalid license Number, Trip not located!");
+        }
+
+        Location location = new Location(destX, destY);
+        trip.setEndLocation(location);
+
+        trip.endTrip();
+
+        TaxiServiceManager.getInstance().reassignCars(licenseNumber);
+
     }
 
 }

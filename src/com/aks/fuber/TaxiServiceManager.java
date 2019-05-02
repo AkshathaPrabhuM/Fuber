@@ -138,4 +138,17 @@ public class TaxiServiceManager
         return this.availableCars.values().stream().filter(x -> x.getColor().equals(colorPref))
             .collect(Collectors.toList()).size() > 0;
     }
+
+    public void reassignCars(String licenseNumber) throws CabNotFoundException
+    {
+        if ((licenseNumber == null) || (this.assignedCars.get(licenseNumber) == null))
+        {
+            throw new CabNotFoundException("");
+        }
+
+        Car car = this.assignedCars.remove(licenseNumber);
+        this.availableCars.put(licenseNumber, car);
+
+        car.setStatus(Status.AVAILABLE);
+    }
 }

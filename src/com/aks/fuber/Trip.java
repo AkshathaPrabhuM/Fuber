@@ -13,6 +13,8 @@ public class Trip
 
     private Location endLocation;
 
+    private LocalDate endTime;
+
     private String licenseNumber;
 
     private Location startLocation;
@@ -27,9 +29,20 @@ public class Trip
         this.tripStatus = TripStatus.NOT_STARTED;
     }
 
+    public void endTrip()
+    {
+        this.endTime = LocalDate.now();
+        this.tripStatus = TripStatus.TRIP_ENDED;
+    }
+
     public TripStatus getTripStatus()
     {
         return this.tripStatus;
+    }
+
+    public void setEndLocation(Location location)
+    {
+        this.endLocation = location;
     }
 
     public void setStartLocation(Location location)
