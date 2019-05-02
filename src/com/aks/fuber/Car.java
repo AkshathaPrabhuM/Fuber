@@ -1,33 +1,33 @@
 /*
  * Class: Car
- * 
+ *
  * Created on Apr 30, 2019
- * 
+ *
  */
-package com.quintype.aks.fuber;
+package com.aks.fuber;
 
 public class Car extends Vehicle
 {
 
-    private Status status;
-
     private Location location;
+
+    private Status status;
 
     public Car(String licenseNo, Location sourceLocation)
     {
         super(licenseNo);
         this.location = sourceLocation;
-        status = Status.ASSIGNED;
+        this.status = Status.AVAILABLE;
+    }
+
+    public Location getLocation()
+    {
+        return this.location;
     }
 
     public Status getStatus()
     {
-        return status;
-    }
-
-    public void setStatus(Status status)
-    {
-        this.status = status;
+        return this.status;
     }
 
     public void setLocation(Location sourceLocation)
@@ -35,9 +35,9 @@ public class Car extends Vehicle
         this.location = sourceLocation;
     }
 
-    public Location getLocation()
+    public void setStatus(Status status)
     {
-        return this.location;
+        this.status = status;
     }
 
 }

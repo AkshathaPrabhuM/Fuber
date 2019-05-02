@@ -4,7 +4,7 @@
  * Created on May 1, 2019
  *
  */
-package com.quintype.aks.fuber;
+package com.aks.fuber;
 
 public enum Color
 {

@@ -4,7 +4,7 @@
  * Created on May 1, 2019
  *
  */
-package com.quintype.aks.fuber.logger;
+package com.aks.fuber.logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

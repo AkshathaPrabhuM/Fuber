@@ -4,15 +4,15 @@
  * Created on Apr 30, 2019
  *
  */
-package com.quintype.aks.fuber;
+package com.aks.fuber;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.quintype.aks.fuber.exception.CabNotFoundException;
-import com.quintype.aks.fuber.logger.Logger;
+import com.aks.fuber.exception.CabNotFoundException;
+import com.aks.fuber.logger.Logger;
 
 public class TaxiServiceManager
 {
@@ -69,6 +69,7 @@ public class TaxiServiceManager
 
         this.availableCars.remove(closestCar.getLicenseNumber());
         this.assignedCars.put(closestCar.getLicenseNumber(), closestCar);
+        closestCar.setStatus(Status.ASSIGNED);
 
         return closestCar.getLicenseNumber();
     }
@@ -107,6 +108,7 @@ public class TaxiServiceManager
 
         this.availableCars.remove(closestCar.getLicenseNumber());
         this.assignedCars.put(closestCar.getLicenseNumber(), closestCar);
+        closestCar.setStatus(Status.ASSIGNED);
 
         return closestCar.getLicenseNumber();
     }

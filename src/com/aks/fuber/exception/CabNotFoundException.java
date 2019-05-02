@@ -4,7 +4,7 @@
  * Created on May 1, 2019
  * 
  */
-package com.quintype.aks.fuber.exception;
+package com.aks.fuber.exception;
 
 public class CabNotFoundException extends Exception
 {
