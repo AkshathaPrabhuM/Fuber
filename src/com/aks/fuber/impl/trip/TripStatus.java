@@ -4,7 +4,7 @@
  * Created on May 2, 2019
  *
  */
-package com.aks.fuber;
+package com.aks.fuber.impl.trip;
 
 public enum TripStatus
 {

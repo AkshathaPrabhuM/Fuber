@@ -4,7 +4,7 @@
  * Created on May 1, 2019
  *
  */
-package com.aks.fuber;
+package com.aks.fuber.impl.cab;
 
 public enum Color
 {

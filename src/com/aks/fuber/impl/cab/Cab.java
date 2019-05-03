@@ -1,23 +1,22 @@
 /*
- * Class: Car
+ * Class: Cab
  *
  * Created on Apr 30, 2019
  *
  */
-package com.aks.fuber;
+package com.aks.fuber.impl.cab;
 
-public class Car extends Vehicle
+public class Cab extends Vehicle
 {
 
     private Location location;
 
     private Status status;
 
-    public Car(String licenseNo, Location sourceLocation)
+    public Cab(String licenseNo)
     {
         super(licenseNo);
-        this.location = sourceLocation;
-        this.status = Status.AVAILABLE;
+        this.status = Status.OFFLINE;
     }
 
     public Location getLocation()

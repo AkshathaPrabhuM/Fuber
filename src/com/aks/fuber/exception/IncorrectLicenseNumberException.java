@@ -6,11 +6,11 @@
  */
 package com.aks.fuber.exception;
 
-public class IncorrectLicenceNumber extends Exception
+public class IncorrectLicenseNumberException extends Exception
 {
     private static final long serialVersionUID = -3351743239805926942L;
 
-    public IncorrectLicenceNumber(String message)
+    public IncorrectLicenseNumberException(String message)
     {
         super(message);
     }
