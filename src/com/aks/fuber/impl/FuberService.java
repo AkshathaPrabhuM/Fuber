@@ -15,6 +15,9 @@ import com.aks.fuber.impl.cab.Status;
 public class FuberService implements IFuberService
 {
 
+    /* (non-Javadoc)
+     * @see com.aks.fuber.IFuberService#makeCabOffline(java.lang.String)
+     */
     public void makeCabOffline(String licenseNumber) throws Exception
     {
         Cab cab = CabManager.getInstance().getCab(licenseNumber);

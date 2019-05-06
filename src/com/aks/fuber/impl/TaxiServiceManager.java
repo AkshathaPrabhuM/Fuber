@@ -46,6 +46,7 @@ public class TaxiServiceManager
 
     public void addCab(String liceneNumber) throws CabNotFoundException
     {
+        // Get the cab from cab manager given the license number and add it to the cache
         Cab cab = CabManager.getInstance().getCab(liceneNumber);
         if (cab == null)
         {
@@ -56,64 +57,66 @@ public class TaxiServiceManager
 
     public String assignCab(double sourceX, double sourceY) throws CabNotFoundException
     {
-        // (1) make sure we have any cabs
+        // 1. Make sure we have any cabs
         if (this.availableCabs.isEmpty())
         {
             throw new CabNotFoundException(TaxiServiceManager.CABS_NOT_AVAILABLE);
         }
 
-        // (2) get the closes cab by distance
+        // 2. Get the closes cab by distance
         Cab closestCab = this.findClosest(Location.create(sourceX, sourceY), this.availableCabs.values());
 
-        // (3) validate we have valid cab
+        // 3. Validate we have valid cab
         if (closestCab == null)
         {
             throw new CabNotFoundException(TaxiServiceManager.CABS_NOT_AVAILABLE);
         }
 
-        // (4) mark the cab as assigned and some other book keeping
+        // 4. Mark the cab as assigned and some other book keeping
         this.markCabAssigned(closestCab, sourceX, sourceY, false);
 
-        // (5) return the license number of the assigned cab
+        // 5. Return the license number of the assigned cab
         return closestCab.getLicenseNumber();
     }
 
     public String assignCab(double sourceX, double sourceY, Color colorPref) throws CabNotFoundException
     {
-        // (1) make sure we have any cabs
+        // 1. Make sure we have any cabs
         if (this.availableCabs.isEmpty())
         {
             throw new CabNotFoundException(TaxiServiceManager.CABS_NOT_AVAILABLE);
         }
 
-        // (2) let us get only the cabs with the given color preference
+        // 2. Let us get only the cabs with the given color preference
         List<Cab> cabs = this.availableCabs.values().stream().filter(x -> x.getColor().equals(colorPref))
             .collect(Collectors.toList());
 
-        // (3) make sure we have any cabs
+        // 3. Make sure we have any cabs
         if (cabs.isEmpty())
         {
             throw new CabNotFoundException(colorPref.toString() + " cabs not available now! Please try again later!");
         }
 
-        // (4) get the closes cab by distance
+        // 4. Get the closes cab by distance
         Cab closestCab = this.findClosest(Location.create(sourceX, sourceY), cabs);
 
-        // (5) validate we have valid cab
+        // 5. Validate we have valid cab
         if (closestCab == null)
         {
             throw new CabNotFoundException(TaxiServiceManager.CABS_NOT_AVAILABLE);
         }
 
-        // (6) mark the cab as assigned and some other book keeping
+        // 6. Mark the cab as assigned and some other book keeping
         this.markCabAssigned(closestCab, sourceX, sourceY, true);
 
-        // (7) return the license number of the assigned cab
+        // 7. Return the license number of the assigned cab
         return closestCab.getLicenseNumber();
     }
 
     private Cab findClosest(Location location, Collection<Cab> cabs)
     {
+        // Currently linear search is implemented to find the closest cab.
+        // TODO: Improve the finding closest cab algorithm
         Cab closestCab = null;
         double minDistance = Double.MAX_VALUE;
         for (Cab cab : cabs)
@@ -140,14 +143,17 @@ public class TaxiServiceManager
 
     public void reassignCabs(String licenseNumber, Location location) throws CabNotFoundException
     {
+        // 1. Validate the license number
         if ((licenseNumber == null) || (this.assignedCabs.get(licenseNumber) == null))
         {
             throw new CabNotFoundException("Incorrect Cab license number");
         }
 
+        // 2. Remove from assigned cabs and make it available now.
         Cab cab = this.assignedCabs.remove(licenseNumber);
         this.availableCabs.put(licenseNumber, cab);
 
+        // 3. Update other details on the cab.
         cab.setStatus(Status.ONLINE);
         cab.setLocation(location);
     }

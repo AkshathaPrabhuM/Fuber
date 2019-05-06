@@ -40,6 +40,7 @@ public class CabManager
     public void registerCab(String licenseNumber, Color color, String model, int year, int capacity)
     {
         // Create a cab with the details
+        // TODO: We can add validation to check if the cab is already registered.
         Cab cab = new Cab(licenseNumber);
         cab.setColor(color);
         cab.setModel(model);
