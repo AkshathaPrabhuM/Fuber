@@ -29,14 +29,14 @@ You are the proprietor of füber, an on call taxi service.
         // 1. Register cab for first time
         fuberService.registerCab(FuberServiceTest.LICENSENUMBER, Color.RED, "Honda City", 2015, 4);
         
-        // 2. Make the cab online/servicable by publishing cab location.
+        // 2. Make the cab online/serviceable by publishing cab location.
         fuberService.makeCabOnline(FuberServiceTest.LICENSENUMBER, 100, 100);
 
         // 3. User requests for a cab from a given location
         // We will locate the closest cab and return the cab license number.
         String licenseNumber = fuberService.requestCab(120, 120);
 
-        // 4. Start the trip for the licence number of the reqested cab.
+        // 4. Start the trip for the license number of the requested cab.
         fuberService.startTrip(licenseNumber);
 
         // 5. When the trip is completed we will return the cost of the trip
