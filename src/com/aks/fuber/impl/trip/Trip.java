@@ -39,9 +39,9 @@ public class Trip
     {
         long minutes = ((this.endTime - this.startTime) / (60 * 1000)) % 60;
         double distance = this.startLocation.distance(this.endLocation);
-        double cost = (minutes * 1) + (distance * 2);
+        double result = (minutes * 1) + (distance * 2);
 
-        return this.colorPrefSet ? cost + 5 : cost;
+        return this.colorPrefSet ? result + 5 : result;
     }
 
     public void endTrip()
@@ -54,6 +54,11 @@ public class Trip
     public double getCost()
     {
         return this.cost;
+    }
+
+    public String getLicenseNumber()
+    {
+        return this.licenseNumber;
     }
 
     public TripStatus getTripStatus()

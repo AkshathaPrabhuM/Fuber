@@ -25,7 +25,7 @@ public class FuberService implements IFuberService
         cab.setLocation(currentLocation);
         cab.setStatus(Status.ONLINE);
 
-        TaxiServiceManager.getInstance().addCabs(cab);
+        TaxiServiceManager.getInstance().addCab(cab);
     }
 
     /* (non-Javadoc)

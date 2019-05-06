@@ -14,22 +14,22 @@ import com.aks.fuber.impl.cab.Color;
 
 public class CabManager
 {
-    private static CabManager INSTANCE;
+    private static CabManager instance;
 
     public static CabManager getInstance()
     {
-        if (CabManager.INSTANCE == null)
+        if (CabManager.instance == null)
         {
-            CabManager.INSTANCE = new CabManager();
+            CabManager.instance = new CabManager();
         }
-        return CabManager.INSTANCE;
+        return CabManager.instance;
     }
 
     private Map<String, Cab> cabs;
 
     private CabManager()
     {
-        this.cabs = new HashMap<String, Cab>();
+        this.cabs = new HashMap<>();
     }
 
     public Cab getCab(String licenseNumber)

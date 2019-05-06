@@ -6,7 +6,9 @@
  */
 package com.aks.fuber.impl;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -15,20 +17,21 @@ import com.aks.fuber.impl.cab.Cab;
 import com.aks.fuber.impl.cab.Color;
 import com.aks.fuber.impl.cab.Location;
 import com.aks.fuber.impl.cab.Status;
-import com.aks.fuber.logger.Logger;
 
 public class TaxiServiceManager
 {
 
-    private static TaxiServiceManager INSTANCE;
+    private static final String CABS_NOT_AVAILABLE = "Cabs not available at the moment! Please try again later";
+
+    private static TaxiServiceManager instance;
 
     public static TaxiServiceManager getInstance()
     {
-        if (TaxiServiceManager.INSTANCE == null)
+        if (TaxiServiceManager.instance == null)
         {
-            TaxiServiceManager.INSTANCE = new TaxiServiceManager();
+            TaxiServiceManager.instance = new TaxiServiceManager();
         }
-        return TaxiServiceManager.INSTANCE;
+        return TaxiServiceManager.instance;
     }
 
     private Map<String, Cab> assignedCabs;
@@ -37,28 +40,80 @@ public class TaxiServiceManager
 
     private TaxiServiceManager()
     {
-        this.availableCabs = new HashMap<String, Cab>();
-        this.assignedCabs = new HashMap<String, Cab>();
+        this.availableCabs = new HashMap<>();
+        this.assignedCabs = new HashMap<>();
     }
 
-    public void addCabs(Cab cab)
+    public void addCab(Cab cab)
     {
         this.availableCabs.put(cab.getLicenseNumber(), cab);
     }
 
     public String assignCab(double sourceX, double sourceY) throws CabNotFoundException
     {
-        // Find closest cab.
-        if (!this.isCabsAvailable())
+        // (1) make sure we have any cabs
+        if (this.availableCabs.isEmpty())
         {
-            throw new CabNotFoundException("Cabs not available at the moment! Please try again later");
+            throw new CabNotFoundException(TaxiServiceManager.CABS_NOT_AVAILABLE);
         }
 
+        // (2) get the closes cab by distance
+        Cab closestCab = this.findClosest(Location.create(sourceX, sourceY), this.availableCabs.values());
+
+        // (3) validate we have valid cab
+        if (closestCab == null)
+        {
+            throw new CabNotFoundException(TaxiServiceManager.CABS_NOT_AVAILABLE);
+        }
+
+        // (4) mark the cab as assigned and some other book keeping
+        this.markCabAssigned(closestCab);
+
+        // (5) return the license number of the assigned cab
+        return closestCab.getLicenseNumber();
+    }
+
+    public String assignCab(double sourceX, double sourceY, Color colorPref) throws CabNotFoundException
+    {
+        // (1) make sure we have any cabs
+        if (this.availableCabs.isEmpty())
+        {
+            throw new CabNotFoundException(TaxiServiceManager.CABS_NOT_AVAILABLE);
+        }
+
+        // (2) let us get only the cabs with the given color preference
+        List<Cab> cabs = this.availableCabs.values().stream().filter(x -> x.getColor().equals(colorPref))
+            .collect(Collectors.toList());
+
+        // (3) make sure we have any cabs
+        if (cabs.isEmpty())
+        {
+            throw new CabNotFoundException("Cabs not available in " + colorPref + "! Please try again later!");
+        }
+
+        // (4) get the closes cab by distance
+        Cab closestCab = this.findClosest(Location.create(sourceX, sourceY), cabs);
+
+        // (5) validate we have valid cab
+        if (closestCab == null)
+        {
+            throw new CabNotFoundException(TaxiServiceManager.CABS_NOT_AVAILABLE);
+        }
+
+        // (6) mark the cab as assigned and some other book keeping
+        this.markCabAssigned(closestCab);
+
+        // (7) return the license number of the assigned cab
+        return closestCab.getLicenseNumber();
+    }
+
+    private Cab findClosest(Location location, Collection<Cab> cabs)
+    {
         Cab closestCab = null;
         double minDistance = Double.MAX_VALUE;
-        for (Cab cab : this.availableCabs.values())
+        for (Cab cab : cabs)
         {
-            double distance = cab.getLocation().distance(Location.create(sourceX, sourceY));
+            double distance = cab.getLocation().distance(location);
             if (distance < minDistance)
             {
                 closestCab = cab;
@@ -66,66 +121,15 @@ public class TaxiServiceManager
             }
         }
 
-        this.availableCabs.remove(closestCab.getLicenseNumber());
-        this.assignedCabs.put(closestCab.getLicenseNumber(), closestCab);
-        closestCab.setStatus(Status.ASSIGNED);
-
-        TripManager.getInstance().createTrip(closestCab.getLicenseNumber(), false);
-
-        return closestCab.getLicenseNumber();
+        return closestCab;
     }
 
-    public String assignCab(double sourceX, double sourceY, Color colorPref) throws CabNotFoundException
+    private void markCabAssigned(Cab cab)
     {
-        if (colorPref == null)
-        {
-            Logger.getInstance().log("Color not provided. Any available cab will be returned shortly");
-            return this.assignCab(sourceX, sourceY);
-        }
-
-        if (!this.isCabsAvailable(colorPref))
-        {
-            throw new CabNotFoundException("Cabs not available in " + colorPref + "! Please try again later!");
-        }
-
-        Cab closestCab = null;
-        double minDistance = Double.MAX_VALUE;
-        for (Cab cab : this.availableCabs.values())
-        {
-            if (cab.getColor().equals(colorPref))
-            {
-                double distance = cab.getLocation().distance(Location.create(sourceX, sourceY));
-                if (distance < minDistance)
-                {
-                    closestCab = cab;
-                    minDistance = distance;
-                }
-            }
-        }
-
-        this.availableCabs.remove(closestCab.getLicenseNumber());
-        this.assignedCabs.put(closestCab.getLicenseNumber(), closestCab);
-        closestCab.setStatus(Status.ASSIGNED);
-
-        TripManager.getInstance().createTrip(closestCab.getLicenseNumber(), true);
-
-        return closestCab.getLicenseNumber();
-    }
-
-    public boolean isCabsAvailable()
-    {
-        return this.availableCabs.size() > 0;
-    }
-
-    public boolean isCabsAvailable(Color colorPref)
-    {
-        if (!this.isCabsAvailable())
-        {
-            return false;
-        }
-
-        return this.availableCabs.values().stream().filter(x -> x.getColor().equals(colorPref))
-            .collect(Collectors.toList()).size() > 0;
+        this.availableCabs.remove(cab.getLicenseNumber());
+        this.assignedCabs.put(cab.getLicenseNumber(), cab);
+        cab.setStatus(Status.ASSIGNED);
+        TripManager.getInstance().createTrip(cab.getLicenseNumber(), false);
     }
 
     public void reassignCabs(String licenseNumber, Location location) throws CabNotFoundException

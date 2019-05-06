@@ -17,6 +17,14 @@ public interface IFuberService
      */
     public void makeCabOnline(String licenseNumber, double latitude, double longitude);
 
+    /**
+     *
+     * @param licenseNumber
+     * @param color
+     * @param model
+     * @param year
+     * @param capacity
+     */
     public void registerCab(String licenseNumber, Color color, String model, int year, int capacity);
 
     /**

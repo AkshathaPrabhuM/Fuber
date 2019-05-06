@@ -26,11 +26,11 @@ public class Location
 
     public double distance(Location other)
     {
-        double X = this.latitude - other.latitude;
+        double x = this.latitude - other.latitude;
 
-        double Y = this.longitude - other.longitude;
+        double y = this.longitude - other.longitude;
 
-        return Math.sqrt(Math.abs((X * X) - (Y * Y)));
+        return Math.sqrt(Math.abs((x * x) - (y * y)));
     }
 
     public double getLatitude()

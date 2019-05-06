@@ -8,5 +8,5 @@ package com.aks.fuber.impl.trip;
 
 public enum TripStatus
 {
-    NOT_STARTED, TRIP_ENDED, TRIP_STARTED;
+    NOT_STARTED, TRIP_CANCELED, TRIP_ENDED, TRIP_STARTED;
 }

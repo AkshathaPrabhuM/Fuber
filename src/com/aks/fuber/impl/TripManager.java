@@ -19,15 +19,15 @@ import com.aks.fuber.impl.trip.TripStatus;
 
 public class TripManager
 {
-    private static TripManager INSTANCE;
+    private static TripManager instance;
 
     public static TripManager getInstance()
     {
-        if (TripManager.INSTANCE == null)
+        if (TripManager.instance == null)
         {
-            TripManager.INSTANCE = new TripManager();
+            TripManager.instance = new TripManager();
         }
-        return TripManager.INSTANCE;
+        return TripManager.instance;
     }
 
     private Map<String, Trip> trips;
