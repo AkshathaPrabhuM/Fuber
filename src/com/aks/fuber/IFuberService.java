@@ -14,8 +14,17 @@ public interface IFuberService
      * @param licenseNumber
      * @param latitude
      * @param longitude
+     * @throws Exception
      */
-    public void makeCabOnline(String licenseNumber, double latitude, double longitude);
+    public void makeCabOffline(String licenseNumber) throws Exception;
+
+    /**
+     * @param licenseNumber
+     * @param latitude
+     * @param longitude
+     * @throws Exception
+     */
+    public void makeCabOnline(String licenseNumber, double latitude, double longitude) throws Exception;
 
     /**
      *

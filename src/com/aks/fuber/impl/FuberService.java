@@ -15,17 +15,25 @@ import com.aks.fuber.impl.cab.Status;
 public class FuberService implements IFuberService
 {
 
+    public void makeCabOffline(String licenseNumber) throws Exception
+    {
+        Cab cab = CabManager.getInstance().getCab(licenseNumber);
+        cab.setStatus(Status.OFFLINE);
+
+        TaxiServiceManager.getInstance().removeCab(licenseNumber);
+    }
+
     /* (non-Javadoc)
      * @see com.aks.fuber.IFuberService#makeCabOnline(java.lang.String, double, double)
      */
-    public void makeCabOnline(String licenseNumber, double latitude, double longitude)
+    public void makeCabOnline(String licenseNumber, double latitude, double longitude) throws Exception
     {
         Location currentLocation = Location.create(latitude, longitude);
         Cab cab = CabManager.getInstance().getCab(licenseNumber);
         cab.setLocation(currentLocation);
         cab.setStatus(Status.ONLINE);
 
-        TaxiServiceManager.getInstance().addCab(cab);
+        TaxiServiceManager.getInstance().addCab(licenseNumber);
     }
 
     /* (non-Javadoc)

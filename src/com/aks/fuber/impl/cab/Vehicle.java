@@ -58,11 +58,6 @@ public class Vehicle
         this.color = color;
     }
 
-    public void setLicenseNumber(String licenseNumber)
-    {
-        this.licenseNumber = licenseNumber;
-    }
-
     public void setManufacturedYear(int manufacturedYear)
     {
         this.manufacturedYear = manufacturedYear;

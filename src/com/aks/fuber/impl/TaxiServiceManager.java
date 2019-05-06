@@ -44,8 +44,13 @@ public class TaxiServiceManager
         this.assignedCabs = new HashMap<>();
     }
 
-    public void addCab(Cab cab)
+    public void addCab(String liceneNumber) throws CabNotFoundException
     {
+        Cab cab = CabManager.getInstance().getCab(liceneNumber);
+        if (cab == null)
+        {
+            throw new CabNotFoundException("Cab not found for given license number");
+        }
         this.availableCabs.put(cab.getLicenseNumber(), cab);
     }
 
@@ -67,7 +72,7 @@ public class TaxiServiceManager
         }
 
         // (4) mark the cab as assigned and some other book keeping
-        this.markCabAssigned(closestCab);
+        this.markCabAssigned(closestCab, sourceX, sourceY, false);
 
         // (5) return the license number of the assigned cab
         return closestCab.getLicenseNumber();
@@ -88,7 +93,7 @@ public class TaxiServiceManager
         // (3) make sure we have any cabs
         if (cabs.isEmpty())
         {
-            throw new CabNotFoundException("Cabs not available in " + colorPref + "! Please try again later!");
+            throw new CabNotFoundException(colorPref.toString() + " cabs not available now! Please try again later!");
         }
 
         // (4) get the closes cab by distance
@@ -101,7 +106,7 @@ public class TaxiServiceManager
         }
 
         // (6) mark the cab as assigned and some other book keeping
-        this.markCabAssigned(closestCab);
+        this.markCabAssigned(closestCab, sourceX, sourceY, true);
 
         // (7) return the license number of the assigned cab
         return closestCab.getLicenseNumber();
@@ -124,19 +129,20 @@ public class TaxiServiceManager
         return closestCab;
     }
 
-    private void markCabAssigned(Cab cab)
+    private void markCabAssigned(Cab cab, double sourceX, double sourceY, boolean isColorPrefSet)
     {
         this.availableCabs.remove(cab.getLicenseNumber());
         this.assignedCabs.put(cab.getLicenseNumber(), cab);
         cab.setStatus(Status.ASSIGNED);
-        TripManager.getInstance().createTrip(cab.getLicenseNumber(), false);
+        cab.setLocation(Location.create(sourceX, sourceY));
+        TripManager.getInstance().createTrip(cab.getLicenseNumber(), isColorPrefSet);
     }
 
     public void reassignCabs(String licenseNumber, Location location) throws CabNotFoundException
     {
         if ((licenseNumber == null) || (this.assignedCabs.get(licenseNumber) == null))
         {
-            throw new CabNotFoundException("");
+            throw new CabNotFoundException("Incorrect Cab license number");
         }
 
         Cab cab = this.assignedCabs.remove(licenseNumber);
@@ -144,5 +150,15 @@ public class TaxiServiceManager
 
         cab.setStatus(Status.ONLINE);
         cab.setLocation(location);
+    }
+
+    public void removeCab(String liceneNumber) throws CabNotFoundException
+    {
+        Cab cab = CabManager.getInstance().getCab(liceneNumber);
+        if (cab == null)
+        {
+            throw new CabNotFoundException("Cab not found for given license number");
+        }
+        this.availableCabs.remove(cab.getLicenseNumber());
     }
 }

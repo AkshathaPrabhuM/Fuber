@@ -30,7 +30,7 @@ public class Location
 
         double y = this.longitude - other.longitude;
 
-        return Math.sqrt(Math.abs((x * x) - (y * y)));
+        return Math.sqrt(Math.abs((x * x) + (y * y)));
     }
 
     public double getLatitude()
